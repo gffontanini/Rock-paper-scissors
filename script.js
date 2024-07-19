@@ -19,8 +19,6 @@ function getComputerChoice() {
 //	}
 //}
 
-function getHumanChoice() {}
-
 function playRound(humanChoice) {
 	let computerChoice = getComputerChoice();
 
@@ -40,38 +38,22 @@ function playRound(humanChoice) {
 	}
 }
 
-function playGame() {
-	let humanScore = 0;
-	let computerScore = 0;
+let humanScore = 0;
+let computerScore = 0;
+let gameEnded = false;
 
-	//for (let i = 0; i < 5; i++) {
-	//	let result = playRound();
-	//	humanScore += result.humanScore;
-	//	computerScore += result.computerScore;
-	//
-	//		console.log(`Human Score: ${humanScore}`);
-	//		console.log(`Computer Score: ${computerScore}`);
-	//
-	//		if (humanScore >= 5 || computerScore >= 5) {
-	//			break;
-	//		}
-	//	}
-
-	while (humanScore < 5 && computerScore < 5) {
-		let result = playRound(getHumanChoice());
-		humanScore += result.humanScore;
-		computerScore += result.computerScore;
-		displayScore(humanScore, computerScore);
-	}
-
-	if (humanScore > computerScore) {
-		displayResults("You've won the game!");
-	} else if (computerScore > humanScore) {
-		displayResults("You've lost! better luck next time!");
-	} else {
-		displayResults("It's a tie!");
-	}
-}
+//for (let i = 0; i < 5; i++) {
+//	let result = playRound();
+//	humanScore += result.humanScore;
+//	computerScore += result.computerScore;
+//
+//		console.log(`Human Score: ${humanScore}`);
+//		console.log(`Computer Score: ${computerScore}`);
+//
+//		if (humanScore >= 5 || computerScore >= 5) {
+//			break;
+//		}
+//	}
 
 document.addEventListener("DOMContentLoaded", () => {
 	const buttonsDiv = document.getElementById("buttons");
@@ -79,24 +61,38 @@ document.addEventListener("DOMContentLoaded", () => {
 	const rockButton = document.createElement("button");
 	rockButton.textContent = "Rock";
 	rockButton.addEventListener("click", () => {
-		playRound("Rock");
-		displayScore(result.humanScore, result.computerScore);
+		if (!gameEnded) {
+			let result = playRound("Rock");
+			humanScore += result.humanScore;
+			computerScore += result.computerScore;
+			displayScore(humanScore, computerScore);
+			checkGameEnd();
+		}
 	});
 	buttonsDiv.appendChild(rockButton);
 
 	const paperButton = document.createElement("button");
 	paperButton.textContent = "Paper";
 	paperButton.addEventListener("click", () => {
-		playRound("Paper");
-		displayScore(result.humanScore, result.computerScore);
+		if (!gameEnded) {
+			let result = playRound("Paper");
+			humanScore += result.humanScore;
+			computerScore += result.computerScore;
+			displayScore(humanScore, computerScore);
+			checkGameEnd();
+		}
 	});
 	buttonsDiv.appendChild(paperButton);
 
 	const scissorsButton = document.createElement("button");
 	scissorsButton.textContent = "Scissors";
 	scissorsButton.addEventListener("click", () => {
-		playRound("Scissors");
-		displayScore(result.humanScore, result.computerScore);
+		if (!gameEnded) {
+			let result = playRound("Scissors");
+			humanScore += result.humanScore;
+			computerScore += result.computerScore;
+			displayScore(humanScore, computerScore);
+		}
 	});
 	buttonsDiv.appendChild(scissorsButton);
 });
@@ -109,6 +105,19 @@ function displayResults(message) {
 function displayScore(humanScore, computerScore) {
 	const scoreDiv = document.getElementById("score");
 	scoreDiv.textContent = `Human Score: ${humanScore} - Computer Score: ${computerScore}`;
+}
+
+function checkGameEnd() {
+	if (humanScore >= 5 || computerScore >= 5) {
+		gameEnded = true;
+		if (humanScore > computerScore) {
+			displayResults("You've won the game!");
+		} else if (computerScore > humanScore) {
+			displayResults("You've lost! better luck next time!");
+		} else {
+			displayResults("It's a tie!");
+		}
+	}
 }
 
 playGame();
